@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Factory of numbers</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<h2>Enter an integer number and press submit</h2>
+<form action="#" th:action="@{/numbers}" th:object="${numbers}" method="post">
+     Your number: <input type="number" th:field="*{numberEnteredByUser}" /><br />
+     <input type="submit" value="Submit" /><input type="reset" value="Reset" />
+</form>
+</body>
+</html>
