@@ -22,7 +22,7 @@ public class NumbersController {
 	
 	@PostMapping("/numbers")
 	public String handleNumbers(@ModelAttribute NumbersForm numbers) {
-		numbersService.changeEnteredNumber(numbers);
+		numbersService.changeEnteredNumber();
 		return "result";
 		}
 	
