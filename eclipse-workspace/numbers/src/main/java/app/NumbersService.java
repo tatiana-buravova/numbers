@@ -9,56 +9,74 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class NumbersService {
+	private int[] digits;
 	
-	public NumbersForm changeEnteredNumber(NumbersForm numbers) {
-		
-		int[] digits = Integer.toString(numbers.getNumberEnteredByUser()).chars().map(c -> c - '0').toArray();
-		
-		int pom[] = new int[digits.length];
-		for (int i = 0; i < digits.length - 1; i++) {
-	        while (digits[i] <= 3) {
-	                pom[i] = digits[i];
-	                digits[i] = digits[i - 1];
-	                digits[i - 1] = pom[i];
-	                break;
-	        }
-		}
-		
-		for (int i = 0; i < digits.length - 1; i++) {
-	        if (digits[i] == 8 || digits[i] == 9) {
-	                digits[i] = digits[i] * 2;
-	        }
+    NumbersForm numbers;
+	public int[] prepareData(int numberEnteredByUser) {
+	  digits = Integer.toString(numbers.getNumberEnteredByUser()).chars().map(c -> c - '0').toArray();
+		return digits; 
+	}
+	
+	public int[] moveDigitsSmallerThreeToOnePositionRight(int[] digits) {
+	  int temp[] = new int[digits.length];
+	  for (int i = digits.length / 2; i > 0; i--) {
+	    if (digits[i] <= 3) {
+	      temp[i] = digits[i];
+	      digits[i] = digits[i - 1];
+	      digits[i - 1] = temp[i];
 	    }
+	  } return digits;
+	}
 		
-		List<Integer> listFromDigits = new ArrayList<>();
-        for (int d : digits) {
-            listFromDigits.add(d);
-        }
-        
-        Iterator<Integer> listFromDigitIterator = listFromDigits.iterator();
-        while (listFromDigitIterator.hasNext()) {
-            Integer next = listFromDigitIterator.next();
-            if (next == 7) {
+	public int[] multiplyDigitsEightOrNineByTwo(int[] digits) {
+	  for (int i = 0; i < digits.length - 1; i++) {
+	    if (digits[i] == 8 || digits[i] == 9) {
+	      digits[i] = digits[i] * 2;
+	    }
+	  } return digits;
+	}
+	
+	List<Integer> listFromDigits = new ArrayList<>();
+	public void changeTypeToList() {
+	  for (int d : digits) {
+        listFromDigits.add(d);
+      }
+    }
+	
+	public void deleteDigitsSeven( ) {
+	  Iterator<Integer> listFromDigitIterator = listFromDigits.iterator();
+      while (listFromDigitIterator.hasNext()) {
+        Integer next = listFromDigitIterator.next();
+          if (next == 7) {
                 listFromDigitIterator.remove();
-            }
-        }
+          }
+       }
+	}
         
-        int countOddDigits = 0;
-        for (Integer listFromDigit : listFromDigits) {
-			if(listFromDigit % 2 == 1)
-				countOddDigits++;
+	int countOddDigits = 0;
+	public void countOddDigits() {
+      for (Integer listFromDigit : listFromDigits) {
+        if(listFromDigit % 2 == 1) {
+		  countOddDigits++;
 		}
+	  }
+	}
         
-        String listString = listFromDigits.stream()
+    String listString;   
+	public void changeTypeToString() {
+		listString = listFromDigits.stream()
         		.map(String::valueOf)
         		.collect(Collectors.joining(","))
         		.replaceAll("[\\[\\]]", "").replaceAll(",", "");
-        
-        int value = (int) Math.floor(Integer.parseInt(listString) / (double) countOddDigits);
-        
-        numbers.setResult(value);
-        
-		return numbers;
 	}
+	
+	int endValue;
+	public void divideByCountOddDigits() {
+	  endValue = (int) Math.floor(Integer.parseInt(listString) / (double) countOddDigits);
+	}
+        
+    public void changeEnteredNumber() {
+        numbers.setResult(endValue);
+    }
 
 }
